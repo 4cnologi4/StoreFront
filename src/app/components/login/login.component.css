@@ -1,0 +1,111 @@
+/* General styles for centering the form */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    font-family: 'Roboto', sans-serif;
+}
+
+.login-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #3f51b5;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #3f51b5;
+}
+
+input[type="text"]::placeholder, input[type="password"]::placeholder {
+    color: transparent;
+}
+
+input[type="text"]:focus::placeholder, input[type="password"]:focus::placeholder {
+    color: #aaa;
+}
+
+input[type="text"] + label, input[type="password"] + label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #aaa;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+input[type="text"]:focus + label, input[type="password"]:focus + label,
+input[type="text"]:not(:placeholder-shown) + label, input[type="password"]:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    color: #3f51b5;
+}
+
+.bouncing-placeholder {
+    display: inline-block;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+button {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #303f9f;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 1rem;
+}
