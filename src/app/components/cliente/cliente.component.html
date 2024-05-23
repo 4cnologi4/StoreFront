@@ -1,5 +1,9 @@
+<div>
+    <button class="add-button" (click)="openModal()">Agregar Cliente</button>
+</div>
+
 <div *ngIf="clients.length > 0; else noClients">
-    <table>
+    <table class="client-table">
         <thead>
             <tr>
                 <th>Nombre</th>
@@ -11,11 +15,11 @@
         <tbody>
             <tr *ngFor="let cliente of clients">
                 <td>{{ cliente.nombre }}</td>
-                <td>{{ cliente.apellido }}</td>
+                <td>{{ cliente.apellidos }}</td>
                 <!-- Agregar más celdas según la estructura de datos de clientes -->
-                <td>
-                    <button (click)="openModalEdit(cliente)">Editar</button>
-                    <button (click)="deleteClient(cliente.id)">Eliminar</button>
+                <td class="action-buttons">
+                    <button (click)="openModal(cliente)">Editar</button>
+                    <button class="delete" (click)="deleteClient(cliente.id)">Eliminar</button>
                 </td>
             </tr>
         </tbody>
@@ -25,15 +29,20 @@
     <p>Nada para mostrar</p>
 </ng-template>
 
-<!-- Modal para editar cliente -->
-<div *ngIf="showModal">
+<!-- Modal para editar o agregar cliente -->
+<div *ngIf="showModal" class="modal-overlay">
     <div class="modal">
         <!-- Contenido del modal para editar cliente -->
-        <h2>Editar Cliente</h2>
-        <form>
+        <h2 *ngIf="selectedClient">Editar Cliente</h2>
+        <h2 *ngIf="!selectedClient">Agregar Cliente</h2>
+        <form [formGroup]="clientForm" (ngSubmit)="saveClient(); $event.preventDefault();">
+            <input type="text" formControlName="nombre" placeholder="Nombre" />
+            <input type="text" formControlName="password" placeholder="Password" />
+            <input type="text" formControlName="apellidos" placeholder="Apellidos" />
+            <input type="text" formControlName="direccion" placeholder="Direccion" />
             <!-- Campos de edición para el cliente -->
-            <button (click)="saveClientEdit()">Guardar</button>
-            <button (click)="showModal = false">Cancelar</button>
+            <button type="submit">Guardar</button>
+            <button class="cancel" type="button" (click)="closeModal()">Cancelar</button>
         </form>
     </div>
 </div>

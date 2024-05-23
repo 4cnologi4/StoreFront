@@ -1,54 +1,100 @@
 import { Component, OnInit } from '@angular/core';
-import { ClienteService } from '../../services/cliente-service.service';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ClienteService } from '../../services/cliente-service.service';
+import { Cliente } from './cliente.model';
+
 
 @Component({
   selector: 'app-cliente',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './cliente.component.html',
-  styleUrl: './cliente.component.css'
+  styleUrls: ['./cliente.component.css'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule]
 })
-
 export class ClienteComponent implements OnInit {
-
-  clients: any[] = [];
-  selectedClient: any = {};
+  clients: Cliente[] = [];
+  selectedClient: Cliente | null = null;
   showModal = false;
+  clientForm: FormGroup;
 
-  constructor(private clientservice: ClienteService) { }
+  constructor(
+    private clientService: ClienteService,
+    private fb: FormBuilder
+  ) {
+    this.clientForm = this.fb.group({
+      id: [''],
+      nombre: ['', Validators.required],
+      password: ['', Validators.required],
+      apellidos: ['', Validators.required],
+      direccion: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
-    console.log("Hello")
     this.getClients();
   }
 
   getClients(): void {
-    this.clientservice.getClients().subscribe(clients => {
+    this.clientService.getClients().subscribe(clients => {
       this.clients = clients;
     });
   }
 
-  openModalEdit(cliente: any): void {
-    this.selectedClient = { ...cliente }; // Clonar el cliente para no modificar directamente los datos originales
+  openModal(client?: Cliente): void {
+    if (client) {
+      this.selectedClient = { ...client }; // Clonar el cliente para no modificar directamente los datos originales
+      this.clientForm.patchValue(this.selectedClient);
+    } else {
+      this.selectedClient = null;
+      this.clientForm.reset();
+    }
     this.showModal = true;
   }
 
-  saveClientEdit(): void {
-    // Lógica para guardar el cliente editado y cerrar el modal
-    // Se llama al servicio para actualizar el cliente
-    this.clientservice.updateClient(this.selectedClient.id, this.selectedClient).subscribe(() => {
-      this.showModal = false;
-      this.getClients(); // Refrescar la lista de clients después de la actualización
-    });
+  closeModal(): void {
+    this.selectedClient = null;
+    this.clientForm.reset();
+    this.showModal = false;
+  }
+
+  saveClient(): void {
+    if (this.clientForm.valid) {
+      const clientData: Cliente = this.clientForm.value;
+      if (this.selectedClient) {
+        // Editar cliente existente
+        this.clientService.updateClient(clientData.id, clientData).subscribe(
+          (response) => {
+            this.getClients(); // Refrescar la lista de clientes después de la actualización
+            this.closeModal();
+            alert(response.message);
+          },
+          error => {
+            alert(error)
+            console.error(error);
+          }
+        );
+      } else {
+        // Crear nuevo cliente
+        this.clientService.addClient(clientData).subscribe(
+          () => {
+            this.getClients(); // Refrescar la lista de clientes después de la adición
+            this.closeModal();
+          },
+          error => {
+            console.error(error);
+          }
+        );
+      }
+    }
   }
 
   deleteClient(id: number): void {
-    // Lógica para eliminar un cliente
-    this.clientservice.deleteClient(id).subscribe(() => {
-      this.getClients(); // Refrescar la lista de clients después de la eliminación
+    this.clientService.deleteClient(id).subscribe((response) => {
+      this.getClients(); // Refrescar la lista de clientes después de la eliminación
+      this.closeModal();
+      alert(response.message);
     });
   }
 
