@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
   private apiUrl = 'https://localhost:44313';
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   login(nombre: string, password: string): Observable<boolean> {
     return this.http.post<{ token: string }>(`${this.apiUrl}/Auth/login`, { nombre, password })
@@ -21,8 +22,13 @@ export class AuthService {
             return true;
           }
           return false;
+        }),
+        catchError(error => {
+          // Captura el error y lo reenvía al componente
+          console.error('Error al iniciar sesión:', error);
+          return throwError('Ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
         })
-      );
+      )
   }
 
   logout(): void {

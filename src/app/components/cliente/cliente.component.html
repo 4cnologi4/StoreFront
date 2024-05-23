@@ -1,0 +1,39 @@
+<div *ngIf="clients.length > 0; else noClients">
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <!-- Agregar más columnas según la estructura de datos de clientes -->
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cliente of clients">
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.apellido }}</td>
+                <!-- Agregar más celdas según la estructura de datos de clientes -->
+                <td>
+                    <button (click)="openModalEdit(cliente)">Editar</button>
+                    <button (click)="deleteClient(cliente.id)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<ng-template #noClients>
+    <p>Nada para mostrar</p>
+</ng-template>
+
+<!-- Modal para editar cliente -->
+<div *ngIf="showModal">
+    <div class="modal">
+        <!-- Contenido del modal para editar cliente -->
+        <h2>Editar Cliente</h2>
+        <form>
+            <!-- Campos de edición para el cliente -->
+            <button (click)="saveClientEdit()">Guardar</button>
+            <button (click)="showModal = false">Cancelar</button>
+        </form>
+    </div>
+</div>

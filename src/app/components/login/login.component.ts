@@ -30,13 +30,24 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { nombre, password } = this.loginForm.value;
-      this.authService.login(nombre, password).subscribe(success => {
-        if (success) {
-          this.router.navigate(['/']);
-        } else {
-          this.errorMessage = 'Invalid login credentials';
+      this.authService.login(nombre, password).subscribe(
+        success => {
+          if (success) {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.errorMessage = 'Invalid login credentials';
+          }
+        },
+        error => {
+          console.error(error);
+          if (error.status === 401) {
+            this.errorMessage = 'Usuario no encontrado o credenciales incorrectas.';
+          } else {
+            this.errorMessage = 'Ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.';
+          }
         }
-      });
+      );
     }
   }
+  
 }

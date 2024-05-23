@@ -1,5 +1,5 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { RouterModule, provideRouter } from '@angular/router';
 
 import routes from './app.routes';
 import { provideHttpClient, HttpClientModule } from '@angular/common/http';
@@ -13,9 +13,11 @@ function tokenGetter() {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
+    provideHttpClient(),
     importProvidersFrom(
       HttpClientModule,
       ReactiveFormsModule,
+      RouterModule,
       FormsModule,
       JwtModule.forRoot({
         config: {
