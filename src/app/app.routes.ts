@@ -10,7 +10,7 @@ const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'protected-route', component: ProtectedComponent, canActivate: [AuthGuard] },
     {
-        path: 'dashboard', 
+        path: 'dashboard',
         component: DashboardComponent,
         canActivate: [AuthGuard],
         children: [
