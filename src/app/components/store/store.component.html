@@ -1,0 +1,42 @@
+<div>
+    <button class="add-button" (click)="openModal()">Agregar   Tienda</button>
+</div>
+
+<div *ngIf="stores.length > 0; else noClients">
+    <table class="store-table">
+        <thead>
+            <tr>
+                <th>Sucursal</th>
+                <th>Dirección</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let store of stores">
+                <td>{{ store.sucursal }}</td>
+                <td>{{ store.direccion }}</td>
+                <td class="action-buttons">
+                    <button (click)="openModal(store)">Editar</button>
+                    <button class="delete" (click)="deleteStore(store.id)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<ng-template #noClients>
+    <p>Nada para mostrar</p>
+</ng-template>
+
+<div *ngIf="showModal" class="modal-overlay">
+    <div class="modal">
+        <h2 *ngIf="selectedStore">Editar Tienda</h2>
+        <h2 *ngIf="!selectedStore">Agregar Tienda</h2>
+        <form [formGroup]="storeForm" (ngSubmit)="saveStore(); $event.preventDefault();">
+            <input type="text" formControlName="sucursal" placeholder="sucursal" />
+            <input type="text" formControlName="direccion" placeholder="Dirección" />
+            
+            <button type="submit">Guardar</button>
+            <button class="cancel" type="button" (click)="closeModal()">Cancelar</button>
+        </form>
+    </div>
+</div>

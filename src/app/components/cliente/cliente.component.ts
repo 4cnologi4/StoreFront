@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClienteService } from '../../services/cliente-service.service';
-import { Cliente } from './cliente.model';
+import { Cliente } from '../../models/cliente.model';
 
 
 @Component({
