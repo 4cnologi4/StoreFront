@@ -32,7 +32,9 @@
         <h2 *ngIf="selectedStore">Editar Tienda</h2>
         <h2 *ngIf="!selectedStore">Agregar Tienda</h2>
         <form [formGroup]="storeForm" (ngSubmit)="saveStore(); $event.preventDefault();">
+            <label for="sucursal">Sucursal</label>
             <input type="text" formControlName="sucursal" placeholder="sucursal" />
+            <label for="direccion">Dirección</label>
             <input type="text" formControlName="direccion" placeholder="Dirección" />
             
             <button type="submit">Guardar</button>

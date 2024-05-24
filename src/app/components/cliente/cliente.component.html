@@ -36,9 +36,13 @@
         <h2 *ngIf="selectedClient">Editar Cliente</h2>
         <h2 *ngIf="!selectedClient">Agregar Cliente</h2>
         <form [formGroup]="clientForm" (ngSubmit)="saveClient(); $event.preventDefault();">
+            <label for="nombre">Nombre</label>
             <input type="text" formControlName="nombre" placeholder="Nombre" />
+            <label for="password">Password</label>
             <input type="text" formControlName="password" placeholder="Password" />
+            <label for="apellidos">Apellidos</label>
             <input type="text" formControlName="apellidos" placeholder="Apellidos" />
+            <label for="direccion">Direccion</label>
             <input type="text" formControlName="direccion" placeholder="Direccion" />
             <!-- Campos de edición para el cliente -->
             <button type="submit">Guardar</button>

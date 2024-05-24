@@ -1,1 +1,52 @@
-<p>articles works!</p>
+<div>
+    <button class="add-button" (click)="openModal()">Agregar Article</button>
+</div>
+
+<div *ngIf="articles.length > 0; else noArticles">
+    <table class="article-table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let article of articles">
+                <td>{{ article.codigo }}</td>
+                <td>{{ article.descripcion }}</td>
+                <td class="action-buttons">
+                    <button (click)="openModal(article)">Editar</button>
+                    <button class="delete" (click)="deleteArticle(article.id)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<ng-template #noArticles>
+    <p>Nada para mostrar</p>
+</ng-template>
+
+<!-- Modal para editar o agregar article -->
+<div *ngIf="showModal" class="modal-overlay">
+    <div class="modal">
+        <!-- Contenido del modal para editar article -->
+        <h2 *ngIf="selectedClient">Editar Artículo</h2>
+        <h2 *ngIf="!selectedClient">Agregar Artículo</h2>
+        <form [formGroup]="articleForm" (ngSubmit)="saveArticle(); $event.preventDefault();">
+            <label for="codigo">Código</label>
+            <input type="text" formControlName="codigo" placeholder="Codigo" />
+            <label for="descripcion">Descripcion</label>
+            <input type="text" formControlName="descripcion" placeholder="Descripcion" />
+            <label for="precio">Precio</label>
+            <input type="text" formControlName="precio" placeholder="Precio" />
+            <label for="stock">Stock</label>
+            <input type="text" formControlName="stock" placeholder="Stock" />
+            <label for="imagen">Imagen</label>
+            <input type="text" formControlName="imagen" placeholder="Imagen" />
+            <!-- Campos de edición para el article -->
+            <button type="submit">Guardar</button>
+            <button class="cancel" type="button" (click)="closeModal()">Cancelar</button>
+        </form>
+    </div>
+</div>
